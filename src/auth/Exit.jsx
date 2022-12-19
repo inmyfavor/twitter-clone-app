@@ -1,18 +1,19 @@
 import React from 'react';
+import ExitIcon from '../icons/ExitIcon';
 
-function exit(setDisplay, setButtonClicked) {
+function exit(setDisplay, setEmail) {
     setDisplay('none');
-    setButtonClicked(null);
+    setEmail('');
 }
 
 const Exit = (props) => {
     return (
-        <img 
-            alt='' 
-            src='svg/exit.svg' 
+        <ExitIcon 
+            fill='#6b7280'
+            height='16px'
+            width='16px'
             className='absolute top-[20px] right-[20px] cursor-pointer'
-            // onClick={()=>props.setDisplay('none')}
-            onClick={()=>exit(props.setDisplay, props.setButtonClicked)}
+            onClick={() => exit(props.setDisplay, props.setEmail)}
         />
     );
 };

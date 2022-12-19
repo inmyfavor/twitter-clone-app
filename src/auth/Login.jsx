@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ModalButton } from './Button';
 import Input from './Input';
 import NoAccount from './NoAccount';
 
 const Login = (props) => {
-    const [email, setEmail] = useState('');
     return (
         <div>
             <h2 className='font-bold text-[24px] mb-[20px] text-center'>Вход в Твиттер</h2>
@@ -12,17 +11,18 @@ const Login = (props) => {
                 type='email' 
                 placeholder='Введите адрес электронной почты' 
                 cStyle='mb-[20px] h-[40px]'
-                value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                value={props.email}
+                onChange={(e) => props.setEmail(e.target.value)}
             />
             <ModalButton
                 name='Далее' 
                 cStyle='bg-black text-white'
-                onClick={email!=='' ? ()=>props.setMode('login2') : null}
+                onClick={props.email!=='' ? () => props.setMode('login2') : null}
             />
             <ModalButton
                 name='Забыли пароль?'
                 cStyle='border border-gray mt-[10px]'
+                onClick={() => props.setMode('forgotPassword')}
             />
             <NoAccount setMode={props.setMode}/>
         </div>

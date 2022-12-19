@@ -24,25 +24,19 @@ const curYear = date.getFullYear();
 const days = Array.from({ length: 31 }, (day, index) => index+1);
 const years = Array.from({ length: 100 }, (day, index) => curYear-index);
 
-function goForward(name, setMode) {
-    if (name !== '') {
-        setMode('congrats');
-    }
-}
-
 const Registration2 = (props) => {
     const [focused, setFocused] = useState(null);
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
     return (
         <div>
             <h2 className='font-bold text-[24px] mb-[20px]'>Создайте учётную запись</h2>
-            <div className='relative mb-[10px]' onFocus={()=>setFocused('name')} onBlur={()=>setFocused(null)}>
+            <div className='relative mb-[10px]' onFocus={() => setFocused('name')} onBlur={() => setFocused(null)}>
                 <Input 
                     cStyle='mb-[5px] h-[60px] pr-[60px] pt-[35px]'
                     value={name}
-                    onChange={(e)=>setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                 />
-                <span className={classNames('absolute top-[18px] left-[20px] transition ease-in-out duration-100', {
+                <span className={classNames('absolute top-[18px] left-[20px] transition ease-in-out duration-100 pointer-events-none', {
                     'text-gray text-[16px]' : focused !== 'name', 
                     '-translate-y-[13px] -translate-x-[8px] text-blue text-[12px]' : focused === 'name' || name !== ''})}>
                         Имя
@@ -58,7 +52,7 @@ const Registration2 = (props) => {
                     cStyle='w-[20%]' 
                     focused={focused} 
                     focusedOn='day' 
-                    onFocus={()=>setFocused('day')} 
+                    onFocus={() => setFocused('day')} 
                     setFocused={setFocused}
                 >
                     {days.map(day => <option value={day}>{day}</option>)}
@@ -69,7 +63,7 @@ const Registration2 = (props) => {
                     cStyle='w-[50%]' 
                     focused={focused} 
                     focusedOn='month' 
-                    onFocus={()=>setFocused('month')} 
+                    onFocus={() => setFocused('month')} 
                     setFocused={setFocused}
                 >
                     {months.map(month => <option value={month.value}>{month.name}</option>)}
@@ -80,7 +74,7 @@ const Registration2 = (props) => {
                     cStyle='w-[30%]' 
                     focused={focused} 
                     focusedOn='year' 
-                    onFocus={()=>setFocused('year')} 
+                    onFocus={() => setFocused('year')} 
                     setFocused={setFocused}
                 >
                     {years.map(year => <option value={year}>{year}</option>)}
@@ -89,7 +83,6 @@ const Registration2 = (props) => {
             <ModalButton
                 name='Далее' 
                 cStyle='bg-black text-white'
-                onClick={goForward(name, props.setMode)}
             />
         </div>
     );

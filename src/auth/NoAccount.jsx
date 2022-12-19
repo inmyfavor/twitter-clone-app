@@ -7,7 +7,7 @@ const NoAccount = (props) => {
             <div className='text-[14px]'>Нет учётной записи?</div>
             <LinkButton
                 name='Зарегистрируйтесь'
-                onClick={()=>props.setMode('registration')}
+                onClick={() => props.setMode('registration')}
             />
         </div>
     );

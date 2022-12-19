@@ -12,18 +12,18 @@ const Registration = (props) => {
                 placeholder='Введите адрес электронной почты' 
                 cStyle='mb-[20px] h-[40px]'
                 value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
             />
             <ModalButton
                 name='Далее' 
                 cStyle='bg-black text-white'
-                onClick={email!=='' ? ()=>props.setMode('registration2') : null}
+                onClick={email!=='' ? () => props.setMode('registration2') : null}
             />
             <div className='flex flex-row justify-center gap-[8px] mt-[20px]'>
                 <div className='text-[14px]'>Уже зарегистрированы?</div>
                 <LinkButton
                     name='Войти'
-                    onClick={()=>props.setMode('login')}
+                    onClick={() => props.setMode('login')}
                 />
             </div>
         </div>

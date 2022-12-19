@@ -1,10 +1,12 @@
 import React from 'react';
-import Header from './auth/Header';
+import Auth from './auth/Auth';
+import MainPage from './mainPage/MainPage';
 
 const App = () => {
   return (
     <div className='flex'>
-      <Header/>
+      <Auth/>
+      <MainPage/>
     </div>
   );
 };

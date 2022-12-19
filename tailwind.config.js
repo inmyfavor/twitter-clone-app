@@ -10,6 +10,7 @@ module.exports = {
       'black': '#000000',
       'white': '#ffffff',
       'blue': '#0284c7',
+      'light-gray': '#efeff6',
     },
   },
   plugins: [],
