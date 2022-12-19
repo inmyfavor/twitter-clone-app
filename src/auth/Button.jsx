@@ -19,7 +19,7 @@ export const HeaderButton = (props) => {
 
 export const LinkButton = (props) => {
     return (
-        <button className='text-blue hover:underline' {...props}>
+        <button className='text-blue hover:underline text-[14px]' {...props}>
             {props.name}
         </button>
     );

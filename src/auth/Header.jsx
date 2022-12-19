@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { HeaderButton } from './Button';
-import Pathes from './Pathes';
+import Login from './Login';
+import Login2 from './Login2';
+import Modal from './Modal';
+import Registration from './Registration';
+import Registration2 from './Registration2';
 
 
 
@@ -27,7 +31,19 @@ const Header = () => {
                     />
                 </div>
             </div>
-            { mode && <Pathes mode={mode} display={display} setDisplay={setDisplay}/> }
+            <Modal display={display} setDisplay={setDisplay}>
+                { mode === 'login' 
+                    ? <Login setMode={setMode}/> 
+                : mode === 'registration' 
+                    ? <Registration setMode={setMode}/> 
+                : mode === 'login2' 
+                    ? <Login2 setMode={setMode}/>
+                : mode === 'registration2'
+                    ? <Registration2 setMode={setMode}/>
+                : mode === 'congrats' 
+                    ? <div>Вы зарегистрированы!</div>
+                : null}
+            </Modal>
         </div>
     );
 };
