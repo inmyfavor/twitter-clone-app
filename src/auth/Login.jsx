@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModalButton } from './Button';
-import Input from './Input';
+import { Input } from './Input';
 import NoAccount from './NoAccount';
 
 const Login = (props) => {

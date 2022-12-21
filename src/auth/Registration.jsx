@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LinkButton, ModalButton } from './Button';
-import Input from './Input';
+import { Input } from './Input';
 
 const Registration = (props) => {
     const [email, setEmail] = useState('');
