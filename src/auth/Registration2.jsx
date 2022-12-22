@@ -4,27 +4,34 @@ import { FocusedInput } from './Input';
 import Select from './Select';
 
 const months = [ 
-    { value: 0, name: 'января' }, 
-    { value: 1, name: 'февраля' }, 
-    { value: 2, name: 'марта' }, 
-    { value: 3, name: 'апреля' }, 
-    { value: 4, name: 'мая' }, 
-    { value: 5, name: 'июня' }, 
-    { value: 6, name: 'июля' }, 
-    { value: 7, name: 'августа' }, 
-    { value: 8, name: 'сентября' }, 
-    { value: 9, name: 'октября' }, 
-    { value: 10, name: 'ноября' }, 
-    { value: 11, name: 'декабря' }
+    { value: 0, name: 'января', days: 31 }, 
+    { value: 1, name: 'февраля', days: 28 }, 
+    { value: 2, name: 'марта', days: 31 }, 
+    { value: 3, name: 'апреля', days: 30 }, 
+    { value: 4, name: 'мая', days: 31 }, 
+    { value: 5, name: 'июня', days: 30 }, 
+    { value: 6, name: 'июля', days: 31 }, 
+    { value: 7, name: 'августа', days: 31 }, 
+    { value: 8, name: 'сентября', days: 30 }, 
+    { value: 9, name: 'октября', days: 31 }, 
+    { value: 10, name: 'ноября', days: 30 }, 
+    { value: 11, name: 'декабря', days: 31 }
 ];
 
 const date = new Date();
 const curYear = date.getFullYear();
-const days = Array.from({ length: 31 }, (day, index) => index+1);
 const years = Array.from({ length: 100 }, (day, index) => curYear-index);
 
 const Registration2 = () => {
     const [name, setName] = useState('');
+    const [daysNum, setDaysNum] = useState(31);
+    const [leapYear, setLeapYear] = useState(curYear);
+
+    const days = Array.from(
+        { length: (daysNum===28 && leapYear%4===0 && (leapYear%400===0 || leapYear%100!==0)) ? daysNum+1 : daysNum}, 
+        (day, index) => index+1
+    );
+
     return (
         <div>
             <h2 className='font-bold text-[24px] mb-[20px]'>Создайте учётную запись</h2>
@@ -47,7 +54,7 @@ const Registration2 = () => {
                     cStyle='w-[50%]'
                     focusedOn='month'
                 >
-                    {months.map(month => <option value={month.value}>{month.name}</option>)}
+                    {months.map(month => <option onClick={() => setDaysNum(month.days)} value={month.value}>{month.name}</option>)}
                 </Select>
                 <Select 
                     name='year' 
@@ -55,7 +62,7 @@ const Registration2 = () => {
                     cStyle='w-[30%]' 
                     focusedOn='year'
                 >
-                    {years.map(year => <option value={year}>{year}</option>)}
+                    {years.map(year => <option onClick={() => setLeapYear(year)} value={year}>{year}</option>)}
                 </Select>
             </div>
             <ModalButton

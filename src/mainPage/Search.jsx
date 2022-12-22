@@ -6,7 +6,7 @@ const Search = () => {
     const [focused, setFocused] = useState(null);
     const [request, setRequest] = useState('');
     return (
-        <div className='relative h-[40px] w-[80%]' onFocus={() => setFocused('search')} onBlur={() => setFocused(null)}>
+        <div className='relative h-[40px] w-[80%] pl-[50px]' onFocus={() => setFocused('search')} onBlur={() => setFocused(null)}>
             <input 
                 className={classNames('h-full w-full rounded-[16px] outline-blue pl-[52px] pr-[40px] leading-[4] placeholder:text-gray', {
                 'bg-light-gray' : focused !== 'search',
@@ -19,7 +19,7 @@ const Search = () => {
             <img 
                 alt='' 
                 src='svg/search.svg'
-                className='absolute top-[12px] left-[20px]'
+                className='absolute top-[12px] left-[70px]'
             />
             { focused === 'search' &&
             <div 
