@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { LinkButton } from '../../auth/Button';
 import Recomendation from './Recomendation';
 
 const recomendations = [
@@ -22,7 +21,6 @@ const Recomendations = () => {
             <div className='flex flex-col gap-[10px] mb-[20px]'>
                 {recs.map(rec => <Recomendation onClick={() => removeRec(rec.id)} key={'rec:'+rec.id} {...rec}/>)}
             </div>
-            <LinkButton name='Показать ещё'/>
         </div>
     );
 };
