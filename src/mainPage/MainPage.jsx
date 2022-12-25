@@ -1,16 +1,41 @@
-import React from 'react';
-import Recomendations from './recomendations/Recomendations';
-import Search from './Search';
-import Settings from './Settings';
+import React, { useState } from 'react';
+import FilledSearchIcon from '../icons/FilledSearchIcon';
+import SearchIcon from '../icons/SearchIcon';
+import FilledSettingsIcon from '../icons/FilledSettingsIcon';
+import SettingsIcon from '../icons/SettingsIcon';
+import Search from './search/Search';
+import Settings from './settings/Settings';
+
+function onIconClicked(icon, setIcon) {
+    if (icon === 'search') {
+        setIcon('settings');
+    }
+    else if (icon === 'settings') {
+        setIcon('search');
+    }
+}
 
 const MainPage = () => {
+    const [icon, setIcon] = useState('search');
     return (
-        <div className='flex flex-col gap-[20px] w-full mx-[200px] pt-[20px] border-x-[2px] border-light-gray'>
-            <div className='flex flex-row items-center'>
-                <Search/>
-                <Settings/>
+        <div className='w-full'>
+            <div 
+                className='w-[24px] h-[24px] absolute top-[50px] left-[150px] cursor-pointer'
+                onClick={() => onIconClicked(icon, setIcon)}>
+                    {icon === 'search' ? <FilledSearchIcon/> : <SearchIcon/>}
             </div>
-            <Recomendations/>
+            <div
+                className='w-[24px] h-[24px] absolute top-[110px] left-[150px] cursor-pointer'
+                onClick={() => onIconClicked(icon, setIcon)}>
+                    {icon === 'settings' ? <FilledSettingsIcon/> : <SettingsIcon/>}
+            </div>
+            <div className='flex flex-col gap-[20px] mx-[200px] border-x-[2px] border-light-gray'>
+                { icon === 'search'
+                    ? <Search/>
+                : icon === 'settings'
+                    ? <Settings/>
+                : null }
+            </div>
         </div>
     );
 };
