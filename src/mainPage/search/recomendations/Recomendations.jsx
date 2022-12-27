@@ -16,7 +16,7 @@ const Recomendations = () => {
     }
 
     return (
-        <div className='pb-[20px] px-[50px] border-b-[2px] border-light-gray'>
+        <div className='pt-[80px] pb-[20px] px-[50px] border-b-[2px] border-light-gray'>
             <h2 className='font-bold text-[24px] mb-[10px]'>Актуальные темы для вас</h2>
             <div className='flex flex-col gap-[10px] mb-[20px]'>
                 {recs.map(rec => <Recomendation onClick={() => removeRec(rec.id)} key={'rec:'+rec.id} {...rec}/>)}

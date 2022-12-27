@@ -3,16 +3,17 @@ import React, { useState } from 'react';
 
 const Check = (props) => {
     const [selected, setSelected] = useState(true);
+
     return (
         <div className={classNames('flex flex-col gap-[10px] px-[30px]', props.cstyle)}>
             <div className='flex flex-row justify-between'>
                 <div className='text-[16px]'>{props.title}</div>
                 <div className={classNames('w-[20px] h-[20px] border-[2px] border-blue rounded-[5px] p-[2px] cursor-pointer', {
-                    'bg-blue' : selected === true,
-                    'bg-white' : selected === false
+                    'bg-blue' : selected,
+                    'bg-white' : !selected
                 })}
-                onClick={selected === true ? () => setSelected(false) : () => setSelected(true)}>
-                    <img alt='' src='svg/check.svg'/>
+                onClick={selected ? () => setSelected(false) : () => setSelected(true)}>
+                    { selected && <img alt='' src='svg/check.svg'/> }
                 </div>
             </div>
             <div className='text-[14px] text-gray'>{props.text}</div>
@@ -23,7 +24,7 @@ const Check = (props) => {
 const Personalization = () => {
     const [selector, setSelector] = useState(true);
     return (
-        <div className='w-[60%] pt-[20px]'>
+        <div>
             <h2 className='font-bold text-[24px] mb-[20px] px-[30px]'>Персонализация и данные</h2>
             <div className='text-[14px] text-gray pb-[15px] border-b-[2px] border-light-gray px-[30px]'>Эти настройки 
             действуют в данном браузере или на данном устройстве, до тех пор пока вы не выполнили вход в систему. 
@@ -32,18 +33,18 @@ const Personalization = () => {
                 <div className='text-[16px]'>Персонализация и данные</div>
                 <div className={classNames(
                     'h-[24px] w-[40px] p-[1px] border-[2px] border-blue rounded-[15px] cursor-pointer duration-300 ease-in-out', {
-                    'bg-white' : selector === false,
-                    'bg-blue' : selector === true
+                    'bg-white' : !selector,
+                    'bg-blue' : selector
                 })}
-                onClick={selector === true ? () => setSelector(false) : () => setSelector(true)}>
+                onClick={selector ? () => setSelector(false) : () => setSelector(true)}>
                     <div className={classNames('h-[18px] w-[18px] rounded-[20px]', {
-                        'bg-blue' : selector === false,
-                        'bg-white translate-x-[16px]' : selector === true
+                        'bg-blue' : !selector,
+                        'bg-white translate-x-[16px]' : selector
                     })}></div>
                 </div>
             </div>
             <div className='text-[14px] text-gray px-[30px] pb-[15px] border-b-[2px] border-light-gray'>Этот переключатель 
-            включить или отключить все настройки на данной странице.</div>
+            позволяет включить или отключить все настройки на данной странице.</div>
             <h5 className='font-bold text-[20px] mb-[20px] px-[30px] pt-[15px]'>Персонализация</h5>
             <Check 
             title='Персонализированные рекламные объявления' 
@@ -59,7 +60,7 @@ const Personalization = () => {
             на основе предположений о вашей личности, таких как устройства и браузеры, которые вы не использовали для 
             входа в Твиттер, или адреса электроннной почты и номера телефонов, похожие на те, что связаны с вашей учётной 
             записью в Твиттере.'
-            cstyle='pb-[20px] border-b-[2px] border-light-gray'/>
+            cstyle='pb-[20px] border-b-[2px] border-light-gray' />
             <h5 className='font-bold text-[20px] mb-[20px] px-[30px] pt-[15px]'>Данные</h5>
             <Check
             title='Разрешить предоставлять деловым партнёрам дополнительную информацию'

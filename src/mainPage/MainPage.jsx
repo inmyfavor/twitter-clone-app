@@ -20,12 +20,12 @@ const MainPage = () => {
     return (
         <div className='w-full'>
             <div 
-                className='w-[24px] h-[24px] absolute top-[50px] left-[150px] cursor-pointer'
+                className='w-[24px] h-[24px] fixed top-[50px] left-[150px] cursor-pointer'
                 onClick={() => onIconClicked(icon, setIcon)}>
                     {icon === 'search' ? <FilledSearchIcon/> : <SearchIcon/>}
             </div>
             <div
-                className='w-[24px] h-[24px] absolute top-[110px] left-[150px] cursor-pointer'
+                className='w-[24px] h-[24px] fixed top-[110px] left-[150px] cursor-pointer'
                 onClick={() => onIconClicked(icon, setIcon)}>
                     {icon === 'settings' ? <FilledSettingsIcon/> : <SettingsIcon/>}
             </div>
@@ -36,6 +36,7 @@ const MainPage = () => {
                     ? <Settings/>
                 : null }
             </div>
+            <div className='h-[50000px] bg-black w-[20px]'></div>
         </div>
     );
 };
