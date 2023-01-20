@@ -36,7 +36,6 @@ const MainPage = () => {
                     ? <Settings/>
                 : null }
             </div>
-            <div className='h-[50000px] bg-black w-[20px]'></div>
         </div>
     );
 };
