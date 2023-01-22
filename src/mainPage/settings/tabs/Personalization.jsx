@@ -13,7 +13,7 @@ const Check = (props) => {
                     'bg-white' : !selected
                 })}
                 onClick={selected ? () => setSelected(false) : () => setSelected(true)}>
-                    { selected && <img alt='' src='svg/check.svg'/> }
+                    { selected && <CheckIcon width='15px' height='15px' fill='white'/> }
                 </div>
             </div>
             <div className='text-[14px] text-gray'>{props.text}</div>

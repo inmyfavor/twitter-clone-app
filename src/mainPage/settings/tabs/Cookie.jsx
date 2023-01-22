@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import CheckIcon from '../../../icons/CheckIcon';
 
 const Check = (props) => {
     return (
@@ -11,7 +12,7 @@ const Check = (props) => {
                     'bg-white' : !props.selected
                 })}
                 onClick={props.onClick}>
-                    { props.selected && <img alt='' src='svg/check.svg'/> }
+                    { props.selected && <CheckIcon width='15px' height='15px' fill='white'/> }
                 </div>
             </div>
             <div className='text-[14px] text-gray'>{props.text}</div>
