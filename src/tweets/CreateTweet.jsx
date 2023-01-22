@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import classNames from 'classnames';
+import React, { useEffect, useRef, useState } from 'react';
 import AtSignIcon from '../icons/AtSignIcon';
 import FollowUserIcon from '../icons/FollowUserIcon';
 import WorldIcon from '../icons/WorldIcon';
@@ -18,7 +19,21 @@ const replyIcons = [
 ];
 
 const CreateTweet = () => {
+
     const [checkMark, setCheckMark] = useState(0);
+    const [modalOpacity, setModalOpacity] = useState(0);
+
+    const reply = useRef(null);
+
+    useEffect(() => {
+        const onClick = e => reply.current.contains(e.target) || setModalOpacity(0);
+        const onScroll = e => reply.current.contains(e.target) || setModalOpacity(0);
+        document.addEventListener('click', onClick);
+        document.addEventListener('scroll', onScroll);
+        return () => { document.removeEventListener('click', onClick);
+                       document.removeEventListener('scroll', onScroll); }
+    }, []);
+
     return (
         <div className='flex flex-row gap-[15px] p-[15px] border-b-[2px] border-light-gray'>
             <UserAvatar/>
@@ -31,11 +46,19 @@ const CreateTweet = () => {
                 </div>
                 <div className='text-[18px] text-gray mb-[10px]'>Что происходит?</div>
                 <div className='relative flex justify-center'>
-                    <div className='flex flex-row gap-[8px] items-center ml-[-10px] hover:bg-blue hover:bg-opacity-[0.1] rounded-[8px] h-[24px] px-[10px]'>
+                    <div className={classNames('flex flex-row gap-[8px] items-center ml-[-10px] h-[24px] px-[10px]', {
+                            'hover:bg-blue hover:bg-opacity-[0.1] rounded-[8px] cursor-pointer' : modalOpacity === 0,
+                            'cursor-default select-none' : modalOpacity === 1
+                        })}
+                        onClick={ modalOpacity === 0 ? ()=>setModalOpacity(1) : ()=>setModalOpacity(0) }
+                        ref={reply}>
                         {replyIcons[checkMark]}
-                        <div className='text-blue text-[14px]'>{replyCategory[checkMark]}</div>
+                        <div className='text-blue text-[14px] font-bold'>{replyCategory[checkMark]}</div>
                     </div>
-                    <WhoCanReplyModal checkMark={checkMark} setCheckMark={setCheckMark}/>
+                    <WhoCanReplyModal 
+                        checkMark={checkMark} 
+                        setCheckMark={setCheckMark} 
+                        modalOpacity={modalOpacity}/>
                 </div>
             </div>
         </div>
