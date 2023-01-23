@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import AtSignIcon from '../icons/AtSignIcon';
 import CheckIcon from '../icons/CheckIcon';
@@ -26,9 +25,9 @@ const ReplyCategory = (props) => {
 
 const WhoCanReplyModal = (props) => {
     return (
-        <div className='absolute top-[35px] h-[320px] w-[360px] flex flex-col bg-white
-            shadow-[0_0_5px_1px_rgba(0,0,0,0.1)] rounded-[16px] py-[15px] duration-300 ease-in-out'
-            style={{opacity: props.modalOpacity}}>
+        <div className='absolute top-[35px] h-[320px] w-[360px] flex-col bg-white
+            shadow-[0_0_5px_1px_rgba(0,0,0,0.1)] rounded-[16px] py-[15px]'
+            style={{display: props.modalDisplay}}>
             <div className='text-[16px] font-semibold mb-[5px] px-[20px] cursor-default select-none'>
                 Кто может отвечать?
             </div>
