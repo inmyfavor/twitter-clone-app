@@ -16,13 +16,17 @@ const Password = (props) => {
     const [icon, setIcon] = useState('hide');
     const [inputType, setInputType] = useState('password');
     return (
-        <FocusedInput value={props.password} setValue={props.setPassword} title={props.title} inputType={inputType}>
-            <img 
-                alt='' 
-                src={`svg/${icon}.svg`} 
-                className='absolute top-[20px] right-[20px]'
-                onClick={() => changeShowPassword(icon, setIcon, setInputType)}
-            />
+        <FocusedInput 
+            value={props.password} 
+            setValue={props.setPassword} 
+            title={props.title} 
+            inputType={inputType}>
+                <img 
+                    alt='' 
+                    src={`svg/${icon}.svg`} 
+                    className='absolute top-[20px] right-[20px]'
+                    onClick={() => changeShowPassword(icon, setIcon, setInputType)}
+                />
         </FocusedInput>
     );
 };

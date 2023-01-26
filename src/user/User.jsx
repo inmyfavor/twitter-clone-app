@@ -1,4 +1,5 @@
 import React from 'react';
+import PlusIcon from '../icons/PlusIcon';
 import CreateTweet from '../tweets/CreateTweet';
 import Profile from './profile/Profile';
 
@@ -7,7 +8,7 @@ const User = () => {
         <div className='w-full'>
         <div className='w-[50px] h-[50px] rounded-[25px] bg-blue fixed top-[50px] left-[120px] cursor-pointer'>
             <img alt='' src='svg/feather.svg' className='absolute m-[15px] rotate-[90deg] scale-x-[-1]'/>
-            <img alt='' src='svg/plus.svg' className='m-[8px]'/>
+            <PlusIcon fill='#ffffff' width='16px' height='16px' className='m-[8px]'/>
         </div>
         <div className='flex flex-col mx-[200px] border-x-[2px] border-light-gray'>
             <Profile/>
