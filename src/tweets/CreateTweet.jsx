@@ -98,22 +98,25 @@ const CreateTweet = () => {
                         <InteractiveIcon icon='emojismile' title='Эмодзи'/>
                     </div>
                     <div className='flex flex-row items-center'>
-                        <div className={classNames('h-[26px] w-[26px] rounded-[13px] mr-[10px] p-[2px]', {
-                            'bg-blue' : tweet.length > 0 && tweet.length < 190,
-                            'bg-yellow' : tweet.length > 189 && tweet.length < 210,
-                            'bg-red' : tweet.length > 209 && tweet.length < 220
-                        })}>
-                            <div className={classNames('h-[22px] w-[22px] rounded-[11px] bg-white text-[12px] flex justify-center items-center', {
+                        <div className='relative mr-[10px]'>
+                            <ProgressBarIcon 
+                                strokecolor={ tweet.length > 0 && tweet.length < 190 
+                                    ? '#0284c7' 
+                                : tweet.length > 189 && tweet.length < 210
+                                    ? '#f6d705' 
+                                : tweet.length > 209 && tweet.length < 220
+                                    ? '#f31814'
+                                : null }
+                                strokebg={ tweet.length > 0 && tweet.length < 220 
+                                    ? '#efeff6'
+                                : null }
+                                dashoffset={`${314-94*(tweet.length/210)}`} />
+                            <div className={classNames('absolute bottom-[50%] right-[50%] text-[12px] translate-x-2/4 translate-y-2/4', {
                                 'text-red' : tweet.length > 209
                             })}>
-                                {tweet.length < 190 ? '' : 210-tweet.length}
+                                {tweet.length > 189 ? 210-tweet.length : null}
                             </div>
                         </div>
-                        {/* <ProgressBarIcon className='mr-[10px]' stroke='#000000'/>
-                        <svg>
-                        <circle cx="12" cy="12" r="11" transform="rotate(-90 30 30)" fill="none" 
-                        stroke-dashoffset="200" stroke-dasharray="314" stroke="#000000" stroke-width="2"/>
-                        </svg> */}
                         <div className='h-[35px] border-r border-button-gray mr-[10px]'></div>
                         <div className='h-[26px] w-[26px] rounded-[13px] bg-button-gray p-[1px] mr-[20px]'>
                             <div className='h-[24px] w-[24px] rounded-[12px] bg-white hover:bg-bg-blue 
