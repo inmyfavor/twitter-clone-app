@@ -14,7 +14,8 @@ module.exports = {
       'button-gray' : '#cfd0d0',
       'bg-blue' : '#e7f4f8',
       'yellow' : '#f6d705',
-      'red' : '#f31814'
+      'red' : '#f31814',
+      'green' : '#14c778',
     },
   },
   plugins: [],

@@ -7,6 +7,7 @@ import ProgressBarIcon from '../icons/ProgressBarIcon';
 import WorldIcon from '../icons/WorldIcon';
 import UserAvatar from '../user/UserAvatar';
 import WhoCanReplyModal from './WhoCanReplyModal';
+import AudienceModal from './AudienceModal';
 
 const replyCategory = [
     'Отвечать могут все пользователи', 
@@ -39,33 +40,42 @@ const InteractiveIcon = (props) => {
 
 const CreateTweet = () => {
 
-    const [checkMark, setCheckMark] = useState(0);
-    const [modalDisplay, setModalDisplay] = useState('none');
+    const [replyCheckMark, setReplyCheckMark] = useState(0);
+    const [audienceCheckMark, setAudienceCheckMark] = useState(0);
+    const [replyModalDisplay, setReplyModalDisplay] = useState('none');
+    const [audienceModalDisplay, setAudienceModalDisplay] = useState('none');
     const [tweet, setTweet] = useState('');
 
     const reply = useRef(null);
-
-    useEffect(() => {
-        const onClick = e => reply.current.contains(e.target) || setModalDisplay('none');
-        const onScroll = e => reply.current.contains(e.target) || setModalDisplay('none');
-        document.addEventListener('click', onClick);
-        document.addEventListener('scroll', onScroll);
-        return () => { document.removeEventListener('click', onClick);
-                       document.removeEventListener('scroll', onScroll); }
-    }, []);
+    const audience = useRef(null);
 
     return (
         <div className='w-full flex flex-row gap-[15px] py-[15px] pl-[15px] pr-[30px] border-b-[2px] border-light-gray'>
             <UserAvatar/>
             <div className='flex flex-col w-full'>
                 <div className='flex flex-col border-b-[2px] border-light-gray'>
-                    <div className='relative h-[24px] w-[60px] mb-[20px]'>
-                        <button className='w-full h-full border border-button-gray text-[14px] pr-[20px] 
-                        rounded-[10px] text-blue hover:bg-bg-blue'>
-                            Все
-                        </button>
-                        <img alt='' src='svg/forwardarrow.svg' 
-                            className='absolute top-[6px] right-[8px] w-[16px] h-[16px] rotate-90 pointer-events-none'/>
+                    <div className='relative'>
+                        <div className='relative h-[24px] w-[60px] mb-[20px]'>
+                            <button className='w-full h-full border border-button-gray text-[14px] pr-[20px] 
+                            rounded-[10px] text-blue hover:bg-bg-blue'
+                            onClick={e => {
+                                if (audienceModalDisplay === 'none') {
+                                    e.stopPropagation();
+                                }
+                                setAudienceModalDisplay('flex');
+                            }}
+                            ref={audience}>
+                                Все
+                            </button>
+                            <img alt='' src='svg/forwardarrow.svg' 
+                                className='absolute top-[6px] right-[8px] w-[16px] h-[16px] rotate-90 pointer-events-none'/>
+                        </div>
+                        <AudienceModal
+                            handle={reply}
+                            setModalDisplay={setAudienceModalDisplay}
+                            modalDisplay={audienceModalDisplay}
+                            checkMark={audienceCheckMark}
+                            setCheckMark={setAudienceCheckMark} />
                     </div>
                     <textarea 
                         placeholder='Что происходит?'
@@ -75,18 +85,25 @@ const CreateTweet = () => {
                     <div className='flex justify-start mb-[15px]'>
                         <div className='relative flex justify-center'>
                             <div className={classNames('flex flex-row gap-[8px] items-center ml-[-10px] h-[24px] px-[10px]', {
-                                    'hover:bg-bg-blue rounded-[8px] cursor-pointer' : modalDisplay === 'none',
-                                    'cursor-default select-none' : modalDisplay === 'flex'
+                                    'hover:bg-bg-blue rounded-[8px] cursor-pointer' : replyModalDisplay === 'none',
+                                    'cursor-default select-none' : replyModalDisplay === 'flex'
                                 })}
-                                onClick={modalDisplay === 'none' ? ()=>setModalDisplay('flex') : ()=>setModalDisplay('none')}
+                                onClick={e => {
+                                    if (replyModalDisplay === 'none') {
+                                        e.stopPropagation();
+                                    }
+                                    setReplyModalDisplay('flex');
+                                }}
                                 ref={reply}>
-                                {replyIcons[checkMark]}
-                                <div className='text-blue text-[14px] font-bold'>{replyCategory[checkMark]}</div>
+                                {replyIcons[replyCheckMark]}
+                                <div className='text-blue text-[14px] font-bold'>{replyCategory[replyCheckMark]}</div>
                             </div>
                             <WhoCanReplyModal 
-                                checkMark={checkMark} 
-                                setCheckMark={setCheckMark} 
-                                modalDisplay={modalDisplay}/>
+                                handle={reply}
+                                checkMark={replyCheckMark}
+                                setModalDisplay={setReplyModalDisplay}
+                                setCheckMark={setReplyCheckMark} 
+                                modalDisplay={replyModalDisplay}/>
                         </div>
                     </div>
                 </div>
