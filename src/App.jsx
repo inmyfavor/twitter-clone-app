@@ -5,7 +5,7 @@ import User from './user/User';
 
 const App = () => {
   return (
-    <div className='flex'>
+    <div className='flex flex-row justify-center'>
       {/* <Auth/>
       <MainPage/> */}
       <User/>

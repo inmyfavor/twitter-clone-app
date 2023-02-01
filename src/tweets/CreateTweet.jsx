@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import AtSignIcon from '../icons/AtSignIcon';
 import FollowUserIcon from '../icons/FollowUserIcon';
 import PlusIcon from '../icons/PlusIcon';
@@ -13,6 +13,11 @@ const replyCategory = [
     'Отвечать могут все пользователи', 
     'Отвечать могут пользователи, которых вы читаете', 
     'Отвечать могут только пользователи, которых вы упоминаете'
+];
+
+const audienceCategory = [
+    'Все',
+    'Близкий круг в Twitter'
 ];
 
 const replyIcons = [
@@ -38,117 +43,196 @@ const InteractiveIcon = (props) => {
     );
 };
 
+const ChooseReply = (props) => {
+    return (
+        <div className='flex flex-row gap-[8px] items-center'>
+            {replyIcons[props.replyCheckMark]}
+            {replyCategory[props.replyCheckMark]}
+        </div>
+    );
+};
+
+const ClosePeople = () => {
+    return (
+        <div className='flex flex-row gap-[8px] items-center'>
+            <img alt='' src='svg/lock.svg'/>
+            Отвечать могут только люди из вашего Близкого круга в Twitter
+        </div>
+    );
+};
+
+const AudienceButton = (props) => {
+    const audience = useRef(null);
+    return (
+        <div className='relative'>
+            <button className={classNames('relative min-w-[60px] h-[24px] border text-[14px] font-semibold', 
+            'pl-[10px] pr-[30px] rounded-[10px] mb-[20px]', {
+                'text-blue border-button-gray hover:bg-bg-blue' : props.audienceCheckMark === 0,
+                'text-green border-green hover:bg-green hover:bg-opacity-[0.1]' : props.audienceCheckMark === 1
+            })}
+            onClick={e => {
+                if (props.audienceModalDisplay === 'none') {
+                    e.stopPropagation();
+                }
+                props.setAudienceModalDisplay('flex');
+            }}
+            ref={audience}>
+                {audienceCategory[props.audienceCheckMark]}
+                <img alt='' src='svg/forwardarrow.svg' 
+                className='absolute top-[4px] right-[8px] w-[16px] h-[16px] rotate-90 pointer-events-none'/>
+            </button>
+            <AudienceModal
+                handle={props.reply}
+                setModalDisplay={props.setAudienceModalDisplay}
+                modalDisplay={props.audienceModalDisplay}
+                checkMark={props.audienceCheckMark}
+                setCheckMark={props.setAudienceCheckMark} />
+        </div>
+    );
+};
+
+const Textarea = (props) => {
+    return (
+        <div className='relative min-h-[30px] w-full mb-[10px] text-[18px]'>
+            <div className='text-transparent whitespace-pre-wrap break-words select-none'>
+                {props.tweet}
+                <br/>
+            </div>
+            <textarea 
+                placeholder='Что происходит?'
+                value={props.tweet}
+                onChange={(e) => props.setTweet(e.target.value)}
+                className='absolute top-0 right-0 bottom-0 left-0 
+                placeholder:text-gray resize-none outline-none w-full h-full'/>
+        </div>
+    );
+};
+
+const WhoCanReplyButton = (props) => {
+    const [replyCheckMark, setReplyCheckMark] = useState(0);
+    const [replyModalDisplay, setReplyModalDisplay] = useState('none');
+    return (
+        <div className='flex justify-start mb-[15px]'>
+            <div className='relative flex justify-center'>
+                <button className={classNames('ml-[-10px] h-[24px] px-[10px] text-blue text-[14px] font-bold', {
+                        'hover:bg-bg-blue rounded-[8px] cursor-pointer' : replyModalDisplay === 'none' && props.audienceCheckMark !== 1,
+                        'cursor-default select-none' : replyModalDisplay === 'flex' || props.audienceCheckMark === 1,
+                        'opacity-[0.4]' : props.audienceCheckMark === 1
+                    })}
+                    onClick={e => {
+                        if (replyModalDisplay === 'none') {
+                            e.stopPropagation();
+                        }
+                        setReplyModalDisplay('flex');
+                    }}
+                    ref={props.reply}
+                    disabled={props.audienceCheckMark === 1 ? true : false}>
+                        { props.audienceCheckMark === 1
+                            ? <ClosePeople/>
+                        : <ChooseReply replyCheckMark={replyCheckMark}/> }
+                </button>
+                <WhoCanReplyModal 
+                    handle={props.reply}
+                    checkMark={replyCheckMark}
+                    setModalDisplay={setReplyModalDisplay}
+                    setCheckMark={setReplyCheckMark} 
+                    modalDisplay={replyModalDisplay}/>
+            </div>
+        </div>
+    );
+};
+
+const IconMenu = () => {
+    return (
+        <div className='flex flex-row gap-[10px]'>
+            <InteractiveIcon icon='picture' title='Медиа'/>
+            <InteractiveIcon icon='gif' title='GIF-файл'/>
+            <InteractiveIcon icon='list' title='Опрос'/>
+            <InteractiveIcon icon='emojismile' title='Эмодзи'/>
+        </div>
+    );
+};
+
+const ProgressBar = (props) => {
+    return (
+        <div className='relative mr-[10px]'>
+            <ProgressBarIcon 
+                strokecolor={ props.tweet.length > 0 && props.tweet.length < 190 
+                    ? '#0284c7' 
+                : props.tweet.length > 189 && props.tweet.length < 210
+                    ? '#f6d705' 
+                : props.tweet.length > 209 && props.tweet.length < 220
+                    ? '#f31814'
+                : null }
+                strokebg={ props.tweet.length > 0 && props.tweet.length < 220 
+                    ? '#efeff6'
+                : null }
+                dashoffset={`${314-94*(props.tweet.length/210)}`} />
+            <div className={classNames('absolute bottom-[50%] right-[50%] text-[12px] translate-x-2/4 translate-y-2/4', {
+                'text-red' : props.tweet.length > 209
+            })}>
+                {props.tweet.length > 189 ? 210-props.tweet.length : null}
+            </div>
+        </div>
+    );
+};
+
+const AddTweet = () => {
+    return (
+        <div className='h-[26px] w-[26px] rounded-[13px] bg-button-gray p-[1px] mr-[20px]'>
+            <div className='h-[24px] w-[24px] rounded-[12px] bg-white hover:bg-bg-blue 
+            cursor-pointer p-[2px]'>
+                <PlusIcon fill='#0284c7' width='20px' height='20px'/>
+            </div>
+        </div>
+    );
+};
+
+const ConditionMenu = (props) => {
+    return (
+        <div className='flex flex-row items-center'>
+            <ProgressBar tweet={props.tweet}/>
+            <div className='h-[35px] border-r border-button-gray mr-[10px]'></div>
+            <AddTweet/>
+            <button className={classNames('h-[35px] bg-blue text-white py-[2px] px-[20px] text-[14px] rounded-[16px] font-semibold', {
+                    'bg-opacity-[0.5]' : props.tweet === '' || props.tweet.length > 210 })}
+                disabled={props.tweet!=='' && props.tweet.length<210 ? false : true}
+            >
+                Твитнуть
+            </button>
+        </div>
+    );
+};
+
 const CreateTweet = () => {
 
-    const [replyCheckMark, setReplyCheckMark] = useState(0);
     const [audienceCheckMark, setAudienceCheckMark] = useState(0);
-    const [replyModalDisplay, setReplyModalDisplay] = useState('none');
     const [audienceModalDisplay, setAudienceModalDisplay] = useState('none');
     const [tweet, setTweet] = useState('');
 
     const reply = useRef(null);
-    const audience = useRef(null);
 
     return (
         <div className='w-full flex flex-row gap-[15px] py-[15px] pl-[15px] pr-[30px] border-b-[2px] border-light-gray'>
             <UserAvatar/>
-            <div className='flex flex-col w-full'>
-                <div className='flex flex-col border-b-[2px] border-light-gray'>
-                    <div className='relative'>
-                        <div className='relative h-[24px] w-[60px] mb-[20px]'>
-                            <button className='w-full h-full border border-button-gray text-[14px] pr-[20px] 
-                            rounded-[10px] text-blue hover:bg-bg-blue'
-                            onClick={e => {
-                                if (audienceModalDisplay === 'none') {
-                                    e.stopPropagation();
-                                }
-                                setAudienceModalDisplay('flex');
-                            }}
-                            ref={audience}>
-                                Все
-                            </button>
-                            <img alt='' src='svg/forwardarrow.svg' 
-                                className='absolute top-[6px] right-[8px] w-[16px] h-[16px] rotate-90 pointer-events-none'/>
-                        </div>
-                        <AudienceModal
-                            handle={reply}
-                            setModalDisplay={setAudienceModalDisplay}
-                            modalDisplay={audienceModalDisplay}
-                            checkMark={audienceCheckMark}
-                            setCheckMark={setAudienceCheckMark} />
-                    </div>
-                    <textarea 
-                        placeholder='Что происходит?'
-                        value={tweet}
-                        onChange={(e) => setTweet(e.target.value)}
-                        className='text-[18px] mb-[10px] placeholder:text-gray resize-none outline-none h-[30px]'/>
-                    <div className='flex justify-start mb-[15px]'>
-                        <div className='relative flex justify-center'>
-                            <div className={classNames('flex flex-row gap-[8px] items-center ml-[-10px] h-[24px] px-[10px]', {
-                                    'hover:bg-bg-blue rounded-[8px] cursor-pointer' : replyModalDisplay === 'none',
-                                    'cursor-default select-none' : replyModalDisplay === 'flex'
-                                })}
-                                onClick={e => {
-                                    if (replyModalDisplay === 'none') {
-                                        e.stopPropagation();
-                                    }
-                                    setReplyModalDisplay('flex');
-                                }}
-                                ref={reply}>
-                                {replyIcons[replyCheckMark]}
-                                <div className='text-blue text-[14px] font-bold'>{replyCategory[replyCheckMark]}</div>
-                            </div>
-                            <WhoCanReplyModal 
-                                handle={reply}
-                                checkMark={replyCheckMark}
-                                setModalDisplay={setReplyModalDisplay}
-                                setCheckMark={setReplyCheckMark} 
-                                modalDisplay={replyModalDisplay}/>
-                        </div>
-                    </div>
+            <div className='w-full pr-[55px]'>
+                <div className='border-b-[2px] border-light-gray'>
+                    <AudienceButton
+                        setAudienceModalDisplay={setAudienceModalDisplay}
+                        audienceModalDisplay={audienceModalDisplay}
+                        audienceCheckMark={audienceCheckMark}
+                        setAudienceCheckMark={setAudienceCheckMark}
+                        reply={reply}/>
+                    <Textarea
+                        tweet={tweet}
+                        setTweet={setTweet}/>
+                    <WhoCanReplyButton
+                        reply={reply}
+                        audienceCheckMark={audienceCheckMark}/>
                 </div>
                 <div className='flex flex-row justify-between items-center mt-[15px]'>
-                    <div className='flex flex-row gap-[10px]'>
-                        <InteractiveIcon icon='picture' title='Медиа'/>
-                        <InteractiveIcon icon='gif' title='GIF-файл'/>
-                        <InteractiveIcon icon='list' title='Опрос'/>
-                        <InteractiveIcon icon='emojismile' title='Эмодзи'/>
-                    </div>
-                    <div className='flex flex-row items-center'>
-                        <div className='relative mr-[10px]'>
-                            <ProgressBarIcon 
-                                strokecolor={ tweet.length > 0 && tweet.length < 190 
-                                    ? '#0284c7' 
-                                : tweet.length > 189 && tweet.length < 210
-                                    ? '#f6d705' 
-                                : tweet.length > 209 && tweet.length < 220
-                                    ? '#f31814'
-                                : null }
-                                strokebg={ tweet.length > 0 && tweet.length < 220 
-                                    ? '#efeff6'
-                                : null }
-                                dashoffset={`${314-94*(tweet.length/210)}`} />
-                            <div className={classNames('absolute bottom-[50%] right-[50%] text-[12px] translate-x-2/4 translate-y-2/4', {
-                                'text-red' : tweet.length > 209
-                            })}>
-                                {tweet.length > 189 ? 210-tweet.length : null}
-                            </div>
-                        </div>
-                        <div className='h-[35px] border-r border-button-gray mr-[10px]'></div>
-                        <div className='h-[26px] w-[26px] rounded-[13px] bg-button-gray p-[1px] mr-[20px]'>
-                            <div className='h-[24px] w-[24px] rounded-[12px] bg-white hover:bg-bg-blue 
-                            cursor-pointer flex justify-center items-center'>
-                                <PlusIcon fill='#0284c7' width='20px' height='20px'/>
-                            </div>
-                        </div>
-                        <button className={classNames('h-[35px] bg-blue text-white py-[2px] px-[20px] text-[14px] rounded-[16px] font-semibold', {
-                                'bg-opacity-[0.5]' : tweet === '' || tweet.length > 210
-                            })}
-                            disabled={tweet!=='' && tweet.length<210 ? false : true}
-                        >
-                            Твитнуть
-                        </button>
-                    </div>
+                    <IconMenu/>
+                    <ConditionMenu tweet={tweet}/>
                 </div>
             </div>
         </div>
